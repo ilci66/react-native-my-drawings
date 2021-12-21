@@ -1,5 +1,7 @@
 import  React, { useEffect } from 'react';
-import { StyleSheet, Pressable, TouchableOpacity, Appearance, ScrollView } from 'react-native';
+import { StyleSheet, TouchableOpacity, Appearance, ScrollView } from 'react-native';
+
+import { Card, Button, Icon } from 'react-native-elements'
 import customBtn from '../constants/CustomStyles';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -38,6 +40,72 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
         <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>asdasd </Text>
       </TouchableOpacity>
       {/* <EditScreenInfo path="/screens/TabOneScreen.tsx" /> */}
+      <ScrollView>
+        
+      <Card>
+            <Card.Title>HELLO WORLD</Card.Title>
+            <Card.Divider />
+            <Card.Image
+              style={{ padding: 0 }}
+              source={{
+                uri:
+                  'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+              }}
+            />
+            <Text style={{ marginBottom: 10 }}>
+              The idea with React Native Elements is more about component
+              structure than actual design.
+            </Text>
+            <Button
+              icon={
+                <Icon
+                  name="code"
+                  color="#ffffff"
+                  iconStyle={{ marginRight: 10 }}
+                />
+              }
+              buttonStyle={{
+                borderRadius: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 0,
+              }}
+              title="VIEW NOW"
+            />
+          </Card>
+          
+      <Card>
+            <Card.Title>HELLO WORLD</Card.Title>
+            <Card.Divider />
+            <Card.Image
+              style={{ padding: 0 }}
+              source={{
+                uri:
+                'https://imgur.com/gLFiC4o',
+              }}
+            />
+            <Text style={{ marginBottom: 10 }}>
+              The idea with React Native Elements is more about component
+              structure than actual design.
+            </Text>
+            <Button
+              icon={
+                <Icon
+                  name="code"
+                  color="#ffffff"
+                  iconStyle={{ marginRight: 10 }}
+                />
+              }
+              buttonStyle={{
+                borderRadius: 0,
+                marginLeft: 0,
+                marginRight: 0,
+                marginBottom: 0,
+              }}
+              title="VIEW NOW"
+            />
+          </Card>
+      </ScrollView>
     </View>
   );
 }
