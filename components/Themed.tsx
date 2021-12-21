@@ -5,6 +5,8 @@
 
 import * as React from 'react';
 import { Text as DefaultText, View as DefaultView } from 'react-native';
+// the button is not inlcuded here so i will try to mimic button behaviour and look and add dark and light options
+// import { Pressable, StyleSheet } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -44,3 +46,12 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+// export function CustomPressable(theme: 'light' | 'dark') {
+//   if(theme == 'light') Colors.buttonLight
+//   Colors.buttonDark
+// }
+// export function CustomPressableText(theme: 'light' | 'dark') {
+//   if(theme == 'light') Colors.btnTextLight
+//   Colors.btnTextDark
+// } 
