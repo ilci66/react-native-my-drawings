@@ -23,6 +23,7 @@ export type Drawings = {
   url:string;
   title: string;
   description: string;
+  shape: string;
 }[] | undefined;
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

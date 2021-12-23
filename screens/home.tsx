@@ -30,10 +30,13 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
           <Card key={i}>
           <Card.Title>{drawing.title}</Card.Title>
           <Card.Divider />
-          <Card.Image
+          {drawing.shape == "h" && <Card.Image style={styles.imageHorizontal}source={{ uri: `${drawing.url}.jpg` }} />}
+          {drawing.shape == "v" && <Card.Image style={styles.imageVertical}source={{ uri: `${drawing.url}.jpg` }} />}
+          {drawing.shape == "r" && <Card.Image style={styles.imageRect}source={{ uri: `${drawing.url}.jpg` }} />}
+          {/* <Card.Image
             style={{ padding: 0 }}
             source={{ uri: `${drawing.url}.jpg` }}
-          />
+          /> */}
           <Text style={{ marginBottom: 10 }}>
             {drawing.description}
           </Text>
@@ -43,7 +46,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
         >
           <Text 
             style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
-              Alter Object Types
+              Edit
           </Text>
         </TouchableOpacity>
           {/* <Button
@@ -70,7 +73,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
   const getDrawings = () => {
     setLoading(true)
-    fetch('http://192.168.1.5:3002/drawings')
+    fetch('http://192.168.1.4:3002/drawings')
       .then(res => res.json())
       .then(async data => {
         await setDrawingData(data)
@@ -87,26 +90,26 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Home</Text>
+      {/* <Text style={styles.title}>Home</Text>
       <Text>
         Drawings will be displayed as cards with the option toupdate the object information
-      </Text>
-      <Text>
+      </Text> */}
+      {/* <Text>
         Might add a filter option at the top of the page for object types, not sure yet
-      </Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <TouchableOpacity 
+      </Text> */}
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
+      {/* <TouchableOpacity 
         onPress={getDrawings} 
         style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
       >
         <Text 
           style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
             asdasd 
-        </Text>
-      </TouchableOpacity>
-      {loading && <Text>loading</Text>}
+        </Text> */}
+      {/* </TouchableOpacity> */}
+      {loading && <Text>loading...</Text>}
       {loading == false && mapDrawingsToCards()}
-      <Text>sdasd</Text>
+      {/* <Text>sdasd</Text> */}
       {/* {drawingData!==undefined ? mapDrawingsToCards() : null} */}
     </View>
   );
@@ -127,9 +130,19 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  image: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
+  imageRect: {
+    width: 300,
+    height: 300,
+    // marginRight: 10,
   },
+  imageVertical:{
+    width: 300,
+    height:500,
+    // marginRight: 10
+  },
+  imageHorizontal:{
+    width:300,
+    height:200,
+    // marginRight:10
+  }
 });
