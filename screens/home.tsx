@@ -27,7 +27,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
       removeClippedSubviews={true}>  
       {drawingData!.map((drawing, i) => {
         return(
-          <Card key={i}>
+          <Card containerStyle={{ alignItems: 'center', justifyContent: 'center'}} key={i}>
           <Card.Title>{drawing.title}</Card.Title>
           <Card.Divider />
           {drawing.shape == "h" && <Card.Image style={styles.imageHorizontal}source={{ uri: `${drawing.url}.jpg` }} />}
