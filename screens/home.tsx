@@ -10,6 +10,8 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
+  const ip = "192.168.1.5" 
+
   const colorScheme = Appearance.getColorScheme();
 
   const [ loading, setLoading ] = useState<boolean | null>(true)
@@ -73,7 +75,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
   const getDrawings = () => {
     setLoading(true)
-    fetch('http://192.168.1.4:3002/drawings')
+    fetch(`http://${ip}:3002/drawings`)
       .then(res => res.json())
       .then(async data => {
         await setDrawingData(data)
