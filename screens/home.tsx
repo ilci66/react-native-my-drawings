@@ -18,7 +18,8 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
   
   const [ drawingData, setDrawingData ] = useState<Drawings>(undefined)
 
-  const updateDrawing = () => {
+  const updateDrawing = async () => {
+
     console.log('I wanna update the drawing')
   }
 
