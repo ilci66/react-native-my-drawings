@@ -10,7 +10,7 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const ip = "172.31.64.1" 
+  const ip = "172.18.64.1" 
 
   const colorScheme = Appearance.getColorScheme();
 
