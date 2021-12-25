@@ -10,7 +10,7 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const ip = "192.168.1.5" 
+  const ip = "172.31.64.1" 
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -36,22 +36,26 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
           {drawing.shape == "h" && <Card.Image style={styles.imageHorizontal}source={{ uri: `${drawing.url}.jpg` }} />}
           {drawing.shape == "v" && <Card.Image style={styles.imageVertical}source={{ uri: `${drawing.url}.jpg` }} />}
           {drawing.shape == "r" && <Card.Image style={styles.imageRect}source={{ uri: `${drawing.url}.jpg` }} />}
-          {/* <Card.Image
-            style={{ padding: 0 }}
-            source={{ uri: `${drawing.url}.jpg` }}
-          /> */}
+
           <Text style={{ marginBottom: 10 }}>
             {drawing.description}
           </Text>
-          <TouchableOpacity 
-          onPress={getDrawings} 
-          style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
-        >
-          <Text 
-            style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
-              Edit
+          {/* <TouchableOpacity 
+            onPress={getDrawings} 
+            style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
+          >
+          <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
+            Edit
           </Text>
-        </TouchableOpacity>
+          </TouchableOpacity> */}
+          <TouchableOpacity 
+            style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
+            onPress={() => navigation.navigate('Detailed', drawing)}
+          >
+          <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
+            Edit
+          </Text>
+          </TouchableOpacity>
           {/* <Button
             icon={
               <Icon
