@@ -2,8 +2,7 @@ import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
 import customBtn from '../constants/CustomStyles';
-import { useForm, useController } from 'react-hook-form';
-import MultiSelect from 'react-native-multiple-select';
+import Select, { SelectItem } from '@redmin_delishaj/react-native-select';
 
 
 export default function Detailed ({ navigation, route }) {
@@ -13,12 +12,8 @@ export default function Detailed ({ navigation, route }) {
 
   const { createdAt, title, shape, updatedAt, url, description } = route.params;
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
-  const [ objects, setObjects ] = useState<undefined | object[]>(undefined)
+  const [ objects, setObjects ] = useState<undefined | SelectItem[]>(undefined)
   const [ selectedObjects, setSelectedObjects ] = useState<[]>([])
-  
-  const onSelectedObjectsChange = (selectedObject: any) => {
-    setSelectedObjects(selectedObject)
-  }
  
   useEffect(() => {
     fetch(`http://${ip}:3002/objects`)
@@ -33,43 +28,23 @@ export default function Detailed ({ navigation, route }) {
 
   return(      
     <View style={styles.container}>
-    {/* <ScrollView style={{marginBottom: 50}}> */}
       <View style={{flexDirection: 'row',flex:1, marginLeft:80}}>
-        <View style={{}}>  
           <Image
             style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
             source={{ uri: `${url}.jpg` }}
           />
-        </View>
         <View style={{paddingRight: 90, paddingLeft: 20}}>
           <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
           <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
         </View>
       </View>
-
-      {isLoadingObjects && <Text>Loading Objects..</Text>}
-      { objects !== undefined && <MultiSelect
-        hideTags
-        items={objects}
-        uniqueKey='id'
-        // don't yet know the purpose of this one 
-        // ref={(component) => { multiSelect = component }}
-        onSelectedItemsChange={onSelectedObjectsChange}
-        selectedItems={selectedObjects}
-        selectText="Pick Drawn Objects"
-        // the list is not too large yet
-        // searchInputPlaceholderText="Search Items..."
-        onChangeInput={(text)=> console.log(text)}
-        tagRemoveIconColor="#CCC"
-        tagBorderColor="#CCC"
-        tagTextColor="#CCC"
-        selectedItemTextColor="#CCC"
-        selectedItemIconColor="#CCC"
-        itemTextColor="#000"
-
-      />}
-    {/* </ScrollView> */}
-
+      <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10}}>
+        <View>
+        {isLoadingObjects && <Text>Loading Objects..</Text>}
+        <Text>sdasd</Text>
+        { objects !== undefined && <Text>there be objects yo!</Text>}
+        </View>
+      </ScrollView>
     </View>
   )
 };
@@ -78,8 +53,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    // justifyContent: 'center',
-    paddingTop: 100
+    justifyContent: 'center',
+    paddingTop: 100,
+    flexDirection:'column'
   },
 
   title: {
