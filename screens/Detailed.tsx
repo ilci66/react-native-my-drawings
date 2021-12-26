@@ -33,15 +33,20 @@ export default function Detailed ({ navigation, route }) {
 
   return(      
     <View style={styles.container}>
-    <ScrollView style={{marginBottom: 50}}>
-      <View>
-        <Image
-          style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
-          source={{ uri: `${url}.jpg` }}
-        />
+    {/* <ScrollView style={{marginBottom: 50}}> */}
+      <View style={{flexDirection: 'row',flex:1, marginLeft:80}}>
+        <View style={{}}>  
+          <Image
+            style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
+            source={{ uri: `${url}.jpg` }}
+          />
+        </View>
+        <View style={{paddingRight: 90, paddingLeft: 20}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
+          <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
+        </View>
       </View>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 40}}>{title}</Text>
-      <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
+
       {isLoadingObjects && <Text>Loading Objects..</Text>}
       { objects !== undefined && <MultiSelect
         hideTags
@@ -63,7 +68,7 @@ export default function Detailed ({ navigation, route }) {
         itemTextColor="#000"
 
       />}
-    </ScrollView>
+    {/* </ScrollView> */}
 
     </View>
   )
@@ -76,6 +81,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     paddingTop: 100
   },
+
   title: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -86,15 +92,15 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   imageRect: {
-    width: 300,
-    height: 300,
+    width: 150,
+    height: 150,
   },
   imageVertical:{
-    width: 300,
-    height:500
+    width: 150,
+    height:250
   },
   imageHorizontal:{
-    width:300,
-    height:200,
+    width:150,
+    height:100,
   }
 });
