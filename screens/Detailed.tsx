@@ -3,25 +3,68 @@ import  React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
 import customBtn from '../constants/CustomStyles';
 import { useForm, useController } from 'react-hook-form';
+import MultiSelect from 'react-native-multiple-select';
+
 
 export default function Detailed ({ navigation, route }) {
   console.log("params ==>",route.params)
-  const { createdAt, title, shape, updatedAt, url, description } = route.params;
 
-  return(
+  const ip = "192.168.1.6" 
+
+  const { createdAt, title, shape, updatedAt, url, description } = route.params;
+  const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
+  const [ objects, setObjects ] = useState<undefined | object[]>(undefined)
+  const [ selectedObjects, setSelectedObjects ] = useState<[]>([])
+  
+  const onSelectedObjectsChange = (selectedObject: any) => {
+    setSelectedObjects(selectedObject)
+  }
+ 
+  useEffect(() => {
+    fetch(`http://${ip}:3002/objects`)
+      .then(res => res.json())
+      .then(async data => {
+        await setObjects(data)
+        await setIsLoadingObjects(false)
+        console.log("just to make sure it's getting data ==>",data)
+        console.log('got all the drawings')
+      })
+  }, [])
+
+  return(      
     <View style={styles.container}>
+    <ScrollView style={{marginBottom: 50}}>
       <View>
         <Image
           style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
           source={{ uri: `${url}.jpg` }}
         />
       </View>
-      <View>
-        
-
-        
-      </View>
       <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 40}}>{title}</Text>
+      <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
+      {isLoadingObjects && <Text>Loading Objects..</Text>}
+      { objects !== undefined && <MultiSelect
+        hideTags
+        items={objects}
+        uniqueKey='id'
+        // don't yet know the purpose of this one 
+        // ref={(component) => { multiSelect = component }}
+        onSelectedItemsChange={onSelectedObjectsChange}
+        selectedItems={selectedObjects}
+        selectText="Pick Drawn Objects"
+        // the list is not too large yet
+        // searchInputPlaceholderText="Search Items..."
+        onChangeInput={(text)=> console.log(text)}
+        tagRemoveIconColor="#CCC"
+        tagBorderColor="#CCC"
+        tagTextColor="#CCC"
+        selectedItemTextColor="#CCC"
+        selectedItemIconColor="#CCC"
+        itemTextColor="#000"
+
+      />}
+    </ScrollView>
+
     </View>
   )
 };

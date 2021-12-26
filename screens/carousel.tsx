@@ -7,7 +7,7 @@ import { Drawings, DrawingUrls } from '../types';
 import { Text, View } from '../components/Themed';
 
 export default function Carousel() {
-  const ip = "172.18.64.1" 
+  const ip = "192.168.1.6" 
 
   // const [ loading, setLoading ] = useState<boolean | null>(true)
 

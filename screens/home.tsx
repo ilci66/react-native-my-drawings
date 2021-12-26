@@ -10,7 +10,7 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const ip = "172.18.64.1" 
+  const ip = "192.168.1.6" 
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -53,7 +53,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
             onPress={() => navigation.navigate('Detailed', drawing)}
           >
           <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
-            Edit
+            Edit Types
           </Text>
           </TouchableOpacity>
           {/* <Button
