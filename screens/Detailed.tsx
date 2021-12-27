@@ -2,13 +2,12 @@ import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
 import customBtn from '../constants/CustomStyles';
-import Select, { SelectItem } from '@redmin_delishaj/react-native-select';
 
 
 export default function Detailed ({ navigation, route }) {
   console.log("params ==>",route.params)
 
-  const ip = "192.168.1.6" 
+  const ip = "192.168.1.4" 
 
   const { createdAt, title, shape, updatedAt, url, description } = route.params;
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
@@ -28,21 +27,23 @@ export default function Detailed ({ navigation, route }) {
 
   return(      
     <View style={styles.container}>
-      <View style={{flexDirection: 'row',flex:1, marginLeft:80}}>
-          <Image
-            style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
-            source={{ uri: `${url}.jpg` }}
-          />
-        <View style={{paddingRight: 90, paddingLeft: 20}}>
-          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
-          <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
-        </View>
+      <View 
+        style={shape == 'h' ? styles.vImgCon : styles.hImgCon}
+      >
+        <Image
+          style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
+          source={{ uri: `${url}.jpg` }}
+        />
+      <View style={{marginRight: 80, paddingLeft: 20}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
+        <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
       </View>
-      <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10}}>
+      </View>
+      <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
         <View>
-        {isLoadingObjects && <Text>Loading Objects..</Text>}
-        <Text>sdasd</Text>
-        { objects !== undefined && <Text>there be objects yo!</Text>}
+          {isLoadingObjects && <Text>Loading Objects..</Text>}
+          <Text style={styles.title}>Edit the objects drawn</Text>
+          {/* { objects !== undefined && <Text>there be objects yo!</Text>} */}
         </View>
       </ScrollView>
     </View>
@@ -57,7 +58,16 @@ const styles = StyleSheet.create({
     paddingTop: 100,
     flexDirection:'column'
   },
-
+  vImgCon: {
+    flexDirection: 'row',
+    flex:0, 
+    marginLeft:80
+  },
+  hImgCon: {
+    flexDirection: 'row',
+    flex:0, 
+    marginLeft:80, 
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
