@@ -2,6 +2,8 @@ import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
 import customBtn from '../constants/CustomStyles';
+import SelectDropdown from 'react-native-select-dropdown'
+import { FontAwesome } from '@expo/vector-icons';
 
 
 export default function Detailed ({ navigation, route }) {
@@ -11,19 +13,31 @@ export default function Detailed ({ navigation, route }) {
 
   const { createdAt, title, shape, updatedAt, url, description } = route.params;
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
-  const [ objects, setObjects ] = useState<undefined | SelectItem[]>(undefined)
-  const [ selectedObjects, setSelectedObjects ] = useState<[]>([])
- 
+  const [ objects, setObjects ] = useState(undefined)
+  const [ typesArray, setTypesArray ] = useState<[] | string[]>([]);
+  const [ selectedTypes, setSelectedTypes ] = useState<[] | string[]>([]);
+  
+  const arrToList = (arr: string[]) => {
+    return <View>
+
+    </View>
+  }
+
   useEffect(() => {
     fetch(`http://${ip}:3002/objects`)
       .then(res => res.json())
       .then(async data => {
         await setObjects(data)
         await setIsLoadingObjects(false)
-        console.log("just to make sure it's getting data ==>",data)
-        console.log('got all the drawings')
+        // if(typeOptions) await selectComponent(typeOptions);
+        await setTypesArray(data.map((ele:{type:string}) => {
+          return ele.type[0].toLocaleUpperCase().concat(ele.type.slice(1).toLocaleLowerCase());
+        }));
+        console.log("just to make sure it's getting data ==>", setObjects)
+        console.log('got all the types')
       })
-  }, [])
+      
+  }, []);
 
   return(      
     <View style={styles.container}>
@@ -40,11 +54,29 @@ export default function Detailed ({ navigation, route }) {
       </View>
       </View>
       <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
-        <View>
+        <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
-          {/* { objects !== undefined && <Text>there be objects yo!</Text>} */}
+          {/* { objects !== undefined && <Text>objects are not undefined</Text>} */}
+          { typesArray && <View style={{marginTop:20}}>
+            <SelectDropdown
+              data={typesArray}
+              onSelect={(selectedItem, index) => {
+                setSelectedTypes([...selectedTypes, selectedItem])
+                console.log(selectedItem, index)
+              }}
+              buttonTextAfterSelection={(selectedItem, index) => {
+                // console.log("selected item ==> ", selectedItem)
+                return selectedItem
+              }}
+              rowTextForSelection={(item, index) => {
+                // console.log("item ==> ", item)
+                return item
+              }}
+            /></View>
+          }
         </View>
+        <View>{selectedTypes.length > 0 && <Text>{selectedTypes.length}</Text>}</View>
       </ScrollView>
     </View>
   )

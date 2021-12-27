@@ -4,3 +4,5 @@
 * Don't forget to add the image file type to the url, fixed the error
 * Able to load the images and map the into cards but image sizes are not right, gonna add another key value pair to the drawings in the database so The sizing can be handled 
 * Decided to limit the edits to only the drawn objects
+* So many libraries but nothing worked for the options form properly
+* There will be a 3 types limit in the array, they will be in a row with the x icon for removing the type
