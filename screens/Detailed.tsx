@@ -1,5 +1,5 @@
 import { Text, View } from '../components/Themed';
-import  React, { useEffect, useState } from 'react';
+import  React, { useEffect, useState } from 'react';  
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
 import { Icon } from 'react-native-elements';
 import customBtn from '../constants/CustomStyles';
@@ -20,14 +20,14 @@ export default function Detailed ({ navigation, route }) {
   const [ selectedTypes, setSelectedTypes ] = useState<[] | string[]>([]);
   const colorScheme = Appearance.getColorScheme();
   
-  const arrToList = (arr: string[]) => {
-    return <View>
-
-    </View>
+  const sendTypes = (id:number) => {
+    fetch(`http://${ip}:3002/drawing/${id}`)
   }
 
-  const removeType = (type) => {
-    console.log(selectedTypes, type)
+  const removeType = (index:number) => {
+    console.log("selected ==>",selectedTypes, "index ==>",index)
+    if(index === 0) setSelectedTypes([...selectedTypes.shift()])
+    setSelectedTypes([...selectedTypes.slice(0,1)])
   }
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Detailed ({ navigation, route }) {
           <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
         </View>
       </View>
-      <ScrollView style={{flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
+      <ScrollView style={{flex:1, marginBottom:0, width:'90%', padding:10, marginTop: 20}}>
         <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
@@ -85,8 +85,8 @@ export default function Detailed ({ navigation, route }) {
             selectedTypes.length > 0 &&  
               <View style={{flex:1, flexDirection:'column'}}> 
                 <View style={{flex:1}}>
-                  {selectedTypes.map((type, i) => <View key={type} style={styles.chosenTypeContainer}>
-                    <TouchableOpacity  style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => console.log("pressed the button")}>
+                  {selectedTypes.map((type, i) => <View key={i} style={styles.chosenTypeContainer}>
+                    <TouchableOpacity style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => { removeType(i) }}>
                       <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>{type}</Text>
                     </TouchableOpacity>
                   </View>)}
@@ -94,7 +94,11 @@ export default function Detailed ({ navigation, route }) {
               </View>
           }
         </View>
-        
+        <View>
+          <TouchableOpacity style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => console.log('wanna submit')}>
+            <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}><Icon size={28} name='send' color='white'/></Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   )
