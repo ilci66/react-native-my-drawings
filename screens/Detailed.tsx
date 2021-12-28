@@ -1,6 +1,7 @@
 import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
+import { Icon } from 'react-native-elements';
 import customBtn from '../constants/CustomStyles';
 import SelectDropdown from 'react-native-select-dropdown'
 import { FontAwesome } from '@expo/vector-icons';
@@ -48,17 +49,17 @@ export default function Detailed ({ navigation, route }) {
           style={shape === "h" ? styles.imageHorizontal : shape === "r" ? styles.imageRect : styles.imageVertical}
           source={{ uri: `${url}.jpg` }}
         />
-      <View style={{marginRight: 80, paddingLeft: 20}}>
-        <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
-        <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
-      </View>
+        <View style={{marginRight: 80, paddingLeft: 20}}>
+          <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
+          <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
+        </View>
       </View>
       <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
         <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
           {/* { objects !== undefined && <Text>objects are not undefined</Text>} */}
-          { typesArray && <View style={{marginTop:20}}>
+          { typesArray && selectedTypes.length < 3 ? <View style={{marginTop:20}}>
             <SelectDropdown
               data={typesArray}
               onSelect={(selectedItem, index) => {
@@ -73,10 +74,17 @@ export default function Detailed ({ navigation, route }) {
                 // console.log("item ==> ", item)
                 return item
               }}
-            /></View>
+            /></View> : <Text>Currently {selectedTypes.length} types chosen, maximum types per drawing is 2</Text>
           }
         </View>
         <View>{selectedTypes.length > 0 && <Text>{selectedTypes.length}</Text>}</View>
+        <View style={{flex:1, backgroundColor:'lime',flexDirection: 'row', justifyContent: 'space-around', paddingTop: 5, paddingBottom: 5, marginTop: 20}}>
+          {/* <Icon name='cancel'/> */}
+          {selectedTypes.length > 0 &&  
+          selectedTypes.map(type => <View key={type} style={{flex:1, alignItems: 'center', justifyContent: 'center',margin:10, backgroundColor: 'red'}}><Text style={{fontSize: 15, alignSelf:'center', padding:20}}>{type}<Icon name='cancel'/></Text></View>)}
+          
+        </View>
+        
       </ScrollView>
     </View>
   )
