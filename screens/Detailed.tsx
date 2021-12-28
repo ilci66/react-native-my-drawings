@@ -7,6 +7,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { FontAwesome } from '@expo/vector-icons';
 
 
+
 export default function Detailed ({ navigation, route }) {
   console.log("params ==>",route.params)
 
@@ -17,6 +18,7 @@ export default function Detailed ({ navigation, route }) {
   const [ objects, setObjects ] = useState(undefined)
   const [ typesArray, setTypesArray ] = useState<[] | string[]>([]);
   const [ selectedTypes, setSelectedTypes ] = useState<[] | string[]>([]);
+  const colorScheme = Appearance.getColorScheme();
   
   const arrToList = (arr: string[]) => {
     return <View>
@@ -58,35 +60,39 @@ export default function Detailed ({ navigation, route }) {
           <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
         </View>
       </View>
-      <ScrollView  style={{backgroundColor: 'lightgray', flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
+      <ScrollView style={{flex:1, marginBottom:60, width:'90%', padding:10, marginTop: 20}}>
         <View style={{flex:1, alignItems: 'center', justifyContent: 'center'}}>
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
           {/* { objects !== undefined && <Text>objects are not undefined</Text>} */}
-          { typesArray && selectedTypes.length < 3 ? <View style={{marginTop:20}}>
+          { typesArray && selectedTypes.length < 2 ? <View style={{marginTop:20}}>
             <SelectDropdown
               data={typesArray}
               onSelect={(selectedItem, index) => {
                 setSelectedTypes([...selectedTypes, selectedItem])
                 console.log(selectedItem, index)
               }}
-              buttonTextAfterSelection={(selectedItem, index) => {
-                // console.log("selected item ==> ", selectedItem)
-                return selectedItem
-              }}
-              rowTextForSelection={(item, index) => {
-                // console.log("item ==> ", item)
-                return item
-              }}
-            /></View> : <Text>Currently {selectedTypes.length} types chosen, maximum types per drawing is 2</Text>
+              buttonTextAfterSelection={(selectedItem, index) => selectedItem }
+              rowTextForSelection={(item, index) =>  item }
+            /></View> : <Text style={{marginTop: 15}}>Maximum types per drawing is 2</Text>
           }
         </View>
-        <View>{selectedTypes.length > 0 && <Text>{selectedTypes.length}</Text>}</View>
-        <View style={{flex:1, backgroundColor:'lime',flexDirection: 'row', justifyContent: 'space-around', paddingTop: 5, paddingBottom: 5, marginTop: 20}}>
-          {/* <Icon name='cancel'/> */}
-          {selectedTypes.length > 0 &&  
-          selectedTypes.map((type, i) => <View key={type} style={styles.chosenTypeContainer}><Text style={styles.chosenTypeText}>{type}<Icon name='cancel' onPress={(e) => console.log(e.target)}/></Text></View>)}
-          
+        <View style={{flex:1,flexDirection: 'column', justifyContent: 'center', alignItems:'center', paddingTop: 5, paddingBottom: 5, marginTop: 20}}>
+          {selectedTypes.length > 0 && <Text style={{fontSize:14, fontWeight:'bold'}}>
+            Press on the type you wanna remove
+          </Text>}
+          {
+            selectedTypes.length > 0 &&  
+              <View style={{flex:1, flexDirection:'column'}}> 
+                <View style={{flex:1}}>
+                  {selectedTypes.map((type, i) => <View key={type} style={styles.chosenTypeContainer}>
+                    <TouchableOpacity  style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => console.log("pressed the button")}>
+                      <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>{type}</Text>
+                    </TouchableOpacity>
+                  </View>)}
+                </View>
+              </View>
+          }
         </View>
         
       </ScrollView>
@@ -107,7 +113,6 @@ const styles = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center',
     margin:10, 
-    backgroundColor: 'red'
   },
   chosenTypeText: {
     fontSize: 15, 

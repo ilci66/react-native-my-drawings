@@ -40,14 +40,6 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={{ marginBottom: 10 }}>
             {drawing.description}
           </Text>
-          {/* <TouchableOpacity 
-            onPress={getDrawings} 
-            style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
-          >
-          <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
-            Edit
-          </Text>
-          </TouchableOpacity> */}
           <TouchableOpacity 
             style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
             onPress={() => navigation.navigate('Detailed', drawing)}
