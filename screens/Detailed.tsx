@@ -24,6 +24,10 @@ export default function Detailed ({ navigation, route }) {
     </View>
   }
 
+  const removeType = (type) => {
+    console.log(selectedTypes, type)
+  }
+
   useEffect(() => {
     fetch(`http://${ip}:3002/objects`)
       .then(res => res.json())
@@ -81,7 +85,7 @@ export default function Detailed ({ navigation, route }) {
         <View style={{flex:1, backgroundColor:'lime',flexDirection: 'row', justifyContent: 'space-around', paddingTop: 5, paddingBottom: 5, marginTop: 20}}>
           {/* <Icon name='cancel'/> */}
           {selectedTypes.length > 0 &&  
-          selectedTypes.map(type => <View key={type} style={{flex:1, alignItems: 'center', justifyContent: 'center',margin:10, backgroundColor: 'red'}}><Text style={{fontSize: 15, alignSelf:'center', padding:20}}>{type}<Icon name='cancel'/></Text></View>)}
+          selectedTypes.map((type, i) => <View key={type} style={styles.chosenTypeContainer}><Text style={styles.chosenTypeText}>{type}<Icon name='cancel' onPress={(e) => console.log(e.target)}/></Text></View>)}
           
         </View>
         
@@ -97,6 +101,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 100,
     flexDirection:'column'
+  },
+  chosenTypeContainer:{
+    flex:1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    margin:10, 
+    backgroundColor: 'red'
+  },
+  chosenTypeText: {
+    fontSize: 15, 
+    alignSelf:'center', 
+    padding:20
   },
   vImgCon: {
     flexDirection: 'row',
