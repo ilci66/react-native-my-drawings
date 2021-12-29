@@ -9,19 +9,29 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 export default function Detailed ({ navigation, route }) {
-  console.log("params ==>",route.params)
+  // console.log("params ==>",route.params)
 
   const ip = "192.168.1.4" 
 
-  const { createdAt, title, shape, updatedAt, url, description } = route.params;
+  const { createdAt, title, shape, updatedAt, url, description, id } = route.params;
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
-  const [ objects, setObjects ] = useState(undefined)
+  const [ objects, setObjects ] = useState<{type:string,id:number|string}[] | undefined>(undefined)
   const [ typesArray, setTypesArray ] = useState<[] | string[]>([]);
-  const [ selectedTypes, setSelectedTypes ] = useState<[] | string[]>([]);
+  const [ selectedTypes, setSelectedTypes ] = useState<[] | {type:string, id:string|number}[]>([]);
   const colorScheme = Appearance.getColorScheme();
   
-  const sendTypes = (id:number) => {
-    fetch(`http://${ip}:3002/drawing/${id}`)
+  const sendTypes = (id:number, types:string[]) => {
+    console.log("id ==>",id, types)
+    if(types.length === 0) return console.log("no types chosen")
+    else if(types[0] === types[1]) return console.log("types are identical")
+    fetch(`http://${ip}:3002/drawing/${id}`, 
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },body: JSON.stringify(types.map(type => type.toLowerCase()))} )
+          .then(res => res.json())
+          .then(data => console.log(data))
   }
 
   const removeType = (index:number) => {
@@ -37,6 +47,7 @@ export default function Detailed ({ navigation, route }) {
         await setObjects(data)
         await setIsLoadingObjects(false)
         // if(typeOptions) await selectComponent(typeOptions);
+        console.log("data ===>", data)
         await setTypesArray(data.map((ele:{type:string}) => {
           return ele.type[0].toLocaleUpperCase().concat(ele.type.slice(1).toLocaleLowerCase());
         }));
@@ -65,12 +76,18 @@ export default function Detailed ({ navigation, route }) {
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
           {/* { objects !== undefined && <Text>objects are not undefined</Text>} */}
-          { typesArray && selectedTypes.length < 2 ? <View style={{marginTop:20}}>
+          { !isLoadingObjects && selectedTypes.length < 2 ? <View style={{marginTop:20}}>
             <SelectDropdown
-              data={typesArray}
+              // data={typesArray}
+              data={objects!.map(obj => obj.type)}
               onSelect={(selectedItem, index) => {
-                setSelectedTypes([...selectedTypes, selectedItem])
-                console.log(selectedItem, index)
+                // console.log("FILTERED ID ==>",objects?.filter(obj => obj.type == selectedItem)[0].id)
+                let si = objects?.filter(obj => obj.type == selectedItem)[0].id
+                let st = {type: selectedItem, id: si}
+                setSelectedTypes(selectedTypes.push(st))
+                console.log("st ==>", st, "selected types ===>",selectedTypes.length)
+
+                // console.log(selectedItem, index)
               }}
               buttonTextAfterSelection={(selectedItem, index) => selectedItem }
               rowTextForSelection={(item, index) =>  item }
@@ -95,7 +112,7 @@ export default function Detailed ({ navigation, route }) {
           }
         </View>
         <View>
-          <TouchableOpacity style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => console.log('wanna submit')}>
+          <TouchableOpacity style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => sendTypes(id,selectedTypes )}>
             <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}><Icon size={28} name='send' color='white'/></Text>
           </TouchableOpacity>
         </View>
