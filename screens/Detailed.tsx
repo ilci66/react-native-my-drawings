@@ -29,15 +29,26 @@ export default function Detailed ({ navigation, route }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
-        },body: JSON.stringify(types.map(type => type.toLowerCase()))} )
+        },body: JSON.stringify(types)} )
           .then(res => res.json())
           .then(data => console.log(data))
   }
 
   const removeType = (index:number) => {
-    console.log("selected ==>",selectedTypes, "index ==>",index)
-    if(index === 0) setSelectedTypes([...selectedTypes.shift()])
-    setSelectedTypes([...selectedTypes.slice(0,1)])
+    console.log("selected ==>",selectedTypes, selectedTypes.length, "index ==>",index)
+    if(selectedTypes.length === 2){
+      console.log("length is 2")
+      if(index === 0) {
+        console.log("index is 0"); 
+        return setSelectedTypes([...selectedTypes.slice(1,2)])
+      }
+      else if(index === 1) {
+        console.log("index is 1"); 
+        return setSelectedTypes([...selectedTypes.slice(0,1)])
+      }
+    }else if(selectedTypes.length === 1){
+      setSelectedTypes([])
+    }
   }
 
   useEffect(() => {
@@ -76,7 +87,7 @@ export default function Detailed ({ navigation, route }) {
           {isLoadingObjects && <Text>Loading Objects..</Text>}
           <Text style={styles.title}>Edit the objects drawn</Text>
           {/* { objects !== undefined && <Text>objects are not undefined</Text>} */}
-          { !isLoadingObjects && selectedTypes.length < 2 ? <View style={{marginTop:20}}>
+          { !isLoadingObjects && selectedTypes.length < 2? <View style={{marginTop:20}}>
             <SelectDropdown
               // data={typesArray}
               data={objects!.map(obj => obj.type)}
@@ -84,7 +95,7 @@ export default function Detailed ({ navigation, route }) {
                 // console.log("FILTERED ID ==>",objects?.filter(obj => obj.type == selectedItem)[0].id)
                 let si = objects?.filter(obj => obj.type == selectedItem)[0].id
                 let st = {type: selectedItem, id: si}
-                setSelectedTypes(selectedTypes.push(st))
+                setSelectedTypes([...selectedTypes, st])
                 console.log("st ==>", st, "selected types ===>",selectedTypes.length)
 
                 // console.log(selectedItem, index)
@@ -102,9 +113,9 @@ export default function Detailed ({ navigation, route }) {
             selectedTypes.length > 0 &&  
               <View style={{flex:1, flexDirection:'column'}}> 
                 <View style={{flex:1}}>
-                  {selectedTypes.map((type, i) => <View key={i} style={styles.chosenTypeContainer}>
+                  {selectedTypes.map((obj, i) => <View key={i} style={styles.chosenTypeContainer}>
                     <TouchableOpacity style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight} onPress={() => { removeType(i) }}>
-                      <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>{type}</Text>
+                      <Text style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>{obj.type}</Text>
                     </TouchableOpacity>
                   </View>)}
                 </View>
