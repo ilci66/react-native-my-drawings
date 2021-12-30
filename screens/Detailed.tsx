@@ -11,7 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 export default function Detailed ({ navigation, route }) {
   // console.log("params ==>",route.params)
 
-  const ip = "192.168.1.4" 
+  const ip = "192.168.1.2" 
 
   const { createdAt, title, shape, updatedAt, url, description, id } = route.params;
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)

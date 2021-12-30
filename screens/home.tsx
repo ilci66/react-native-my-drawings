@@ -10,7 +10,7 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const ip = "192.168.1.4" 
+  const ip = "192.168.1.2" 
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -40,6 +40,8 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={{ marginBottom: 10 }}>
             {drawing.description}
           </Text>
+          <Card.Divider />
+            <Text>{drawing.objects.map(obj => (obj.type).toUpperCase() + "     ")}</Text>
           <TouchableOpacity 
             style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
             onPress={() => navigation.navigate('Detailed', drawing)}
@@ -75,10 +77,13 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
     fetch(`http://${ip}:3002/drawings`)
       .then(res => res.json())
       .then(async data => {
+        console.log("check if it actually recieves objects",Object.keys(data[0]))
+        // getting the object types finally
+        console.log("first drawing ==>",  data[0].objects[0].type)
         await setDrawingData(data)
         await setLoading(false)
-        console.log("just to make sure it's getting data ==>",data[0].title)
-        console.log('got all the drawings')
+        // console.log("just to make sure it's getting data ==>",data[0].title)
+        // console.log('got all the drawings')
       })
   }
  
