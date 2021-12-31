@@ -42,15 +42,15 @@ export default function Detailed ({ navigation, route }) {
   }
 
   const removeType = (index:number) => {
-    console.log("selected ==>",selectedTypes, selectedTypes.length, "index ==>",index)
+    // console.log("selected ==>",selectedTypes, selectedTypes.length, "index ==>",index)
     if(selectedTypes.length === 2){
-      console.log("length is 2")
+      // console.log("length is 2")
       if(index === 0) {
-        console.log("index is 0"); 
+        // console.log("index is 0"); 
         return setSelectedTypes([...selectedTypes.slice(1,2)])
       }
       else if(index === 1) {
-        console.log("index is 1"); 
+        // console.log("index is 1"); 
         return setSelectedTypes([...selectedTypes.slice(0,1)])
       }
     }else if(selectedTypes.length === 1){
@@ -69,8 +69,7 @@ export default function Detailed ({ navigation, route }) {
         await setTypesArray(data.map((ele:{type:string}) => {
           return ele.type[0].toLocaleUpperCase().concat(ele.type.slice(1).toLocaleLowerCase());
         }));
-        console.log("just to make sure it's getting data ==>", setObjects)
-        console.log('got all the types')
+        // console.log("just to make sure it's getting data ==>", setObjects)
       })
       
   }, []);
