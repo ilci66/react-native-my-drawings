@@ -1,6 +1,6 @@
 import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';  
-import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
+import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import customBtn from '../constants/CustomStyles';
 import SelectDropdown from 'react-native-select-dropdown'
@@ -11,9 +11,16 @@ import { FontAwesome } from '@expo/vector-icons';
 export default function Detailed ({ navigation, route }) {
   // console.log("params ==>",route.params)
 
-  const ip = "192.168.1.2" 
+  const ip = "192.168.1.151" 
 
   const { createdAt, title, shape, updatedAt, url, description, id } = route.params;
+  // console.log("shape ==>", shape)
+  // console.log("route params ==>", route.params.objects[0].type)
+  let type1:string;
+  let type2:string;
+  if(route.params.objects.length === 2) [type1,type2] = [route.params.objects[0].type, route.params.objects[1].type]
+  if(route.params.objects.length === 1) type1 = route.params.objects[0].type
+  
   const [ isLoadingObjects, setIsLoadingObjects ] = useState<boolean>(true)
   const [ objects, setObjects ] = useState<{type:string,id:number|string}[] | undefined>(undefined)
   const [ typesArray, setTypesArray ] = useState<[] | string[]>([]);
@@ -30,8 +37,8 @@ export default function Detailed ({ navigation, route }) {
         headers: {
           'Content-Type': 'application/json'
         },body: JSON.stringify(types)} )
-          .then(res => res.json())
-          .then(data => console.log(data))
+          .then(res => console.log(res))
+          .catch(e => console.log("error when updating types ==>", e))
   }
 
   const removeType = (index:number) => {
@@ -58,7 +65,7 @@ export default function Detailed ({ navigation, route }) {
         await setObjects(data)
         await setIsLoadingObjects(false)
         // if(typeOptions) await selectComponent(typeOptions);
-        console.log("data ===>", data)
+        // console.log("data ===>", data)
         await setTypesArray(data.map((ele:{type:string}) => {
           return ele.type[0].toLocaleUpperCase().concat(ele.type.slice(1).toLocaleLowerCase());
         }));
@@ -80,6 +87,7 @@ export default function Detailed ({ navigation, route }) {
         <View style={{marginRight: 80, paddingLeft: 20}}>
           <Text style={{fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
           <Text style={{fontSize: 14, marginTop: 10}}>{description}</Text>
+          <Text style={{marginTop:10, fontWeight:'bold'}} >Type: {!type1 ? "No types given yet": type1.toUpperCase()}{type2 && `, ${type2.toUpperCase()}`}</Text>
         </View>
       </View>
       <ScrollView style={{flex:1, marginBottom:0, width:'90%', padding:10, marginTop: 20}}>
@@ -96,7 +104,7 @@ export default function Detailed ({ navigation, route }) {
                 let si = objects?.filter(obj => obj.type == selectedItem)[0].id
                 let st = {type: selectedItem, id: si}
                 setSelectedTypes([...selectedTypes, st])
-                console.log("st ==>", st, "selected types ===>",selectedTypes.length)
+                // console.log("st ==>", st, "selected types ===>",selectedTypes.length)
 
                 // console.log(selectedItem, index)
               }}

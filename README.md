@@ -7,3 +7,4 @@
 * So many libraries but nothing worked for the options form properly
 * There will be a 3 types limit in the array, they will be in a row with the x icon for removing the type
 * Next steps: There must be an option to remove all the existing object types in the edit screens, maybe a button to go back too, on succesfull edits I should be redirected to the main screen to see the updated drawings 
+* Getting a json parse error when updating, working gon it

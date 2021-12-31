@@ -10,7 +10,7 @@ import { RootTabScreenProps, Drawings } from '../types';
 
 export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const ip = "192.168.1.2" 
+  const ip = "192.168.1.151" 
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -41,7 +41,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
             {drawing.description}
           </Text>
           <Card.Divider />
-            <Text>{drawing.objects.map(obj => (obj.type).toUpperCase() + "     ")}</Text>
+            <View style={{ alignItems:'center',justifyContent:'center', marginBottom:10}}><Text style={{fontWeight:'bold'}}>{drawing.objects.map(obj => (obj.type).toUpperCase() + "     ")}</Text></View>
           <TouchableOpacity 
             style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
             onPress={() => navigation.navigate('Detailed', drawing)}
@@ -140,12 +140,12 @@ const styles = StyleSheet.create({
     // marginRight: 10,
   },
   imageVertical:{
-    width: 300,
+    width:300,
     height:500,
     // marginRight: 10
   },
   imageHorizontal:{
-    width:300,
+    width:350,
     height:200,
     // marginRight:10
   }
