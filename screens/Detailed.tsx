@@ -1,6 +1,6 @@
 import { Text, View } from '../components/Themed';
 import  React, { useEffect, useState } from 'react';  
-import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList, Alert } from 'react-native';
+import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList, Alert, BackHandler } from 'react-native';
 import { Icon } from 'react-native-elements';
 import customBtn from '../constants/CustomStyles';
 import SelectDropdown from 'react-native-select-dropdown'
@@ -14,8 +14,6 @@ export default function Detailed ({ navigation, route }) {
   const ip = "192.168.1.151" 
 
   const { createdAt, title, shape, updatedAt, url, description, id } = route.params;
-  // console.log("shape ==>", shape)
-  // console.log("route params ==>", route.params.objects[0].type)
   let type1:string;
   let type2:string;
   if(route.params.objects.length === 2) [type1,type2] = [route.params.objects[0].type, route.params.objects[1].type]
@@ -27,7 +25,18 @@ export default function Detailed ({ navigation, route }) {
   const [ selectedTypes, setSelectedTypes ] = useState<[] | {type:string, id:string|number}[]>([]);
   const [ errorMessage, setErrorMessage ] = useState<undefined | string>(undefined)
   const colorScheme = Appearance.getColorScheme();
-  
+
+  const handleBack = () => {
+    navigation.goBack();
+    return true;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBack);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBack);
+    };
+  }, []);
+
   const sendTypes = async (id:number, types:string[]) => {
     console.log("id ==>",id, types)
     if(types.length === 0) return console.log("no types chosen")
@@ -48,12 +57,12 @@ export default function Detailed ({ navigation, route }) {
         [
           {
             text: "Stay Here",
-            onPress: () => console.log("Cancel Pressed"),
+            onPress: () => {console.log("Cancel Pressed",)},
             style: "cancel"
           },
           { 
             text: "I Wanna Edit More Drawings", 
-            onPress: () => {console.log("OK Pressed", navigation.goBack())}, 
+            onPress: () => {console.log("OK Pressed"); handleBack()}, 
             style: "destructive"
           }
         ]
