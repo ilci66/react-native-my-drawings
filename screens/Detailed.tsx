@@ -39,8 +39,13 @@ export default function Detailed ({ navigation, route }) {
         body: JSON.stringify(types)
       } 
     )
-    .then(res => JSON.stringify(res))
-    .then(async data => console.log("data",data))
+    .then(res => res.json())
+    .then(data => {
+      
+      // console.log("no errors")
+      // Alert.alert()
+      // console.log(data)
+    })
     .catch(e => console.log("error when updating types ==>", e))
   }
 
