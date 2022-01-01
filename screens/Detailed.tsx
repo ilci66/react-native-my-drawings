@@ -42,6 +42,22 @@ export default function Detailed ({ navigation, route }) {
     .then(res => res.json())
     .then(data => {
       
+      Alert.alert(
+        "Good Job!", 
+        "Types are successfuly edited",
+        [
+          {
+            text: "Stay Here",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+          { 
+            text: "I Wanna Edit More Drawings", 
+            onPress: () => {console.log("OK Pressed", navigation.goBack())}, 
+            style: "destructive"
+          }
+        ]
+      );
       // console.log("no errors")
       // Alert.alert()
       // console.log(data)
