@@ -19,7 +19,6 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
   const [ drawingData, setDrawingData ] = useState<Drawings>(undefined)
 
   const updateDrawing = async (data :any) => {
-    
     console.log('Update the drawing with this ==>', data)
   }
 

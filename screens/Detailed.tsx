@@ -9,7 +9,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 export default function Detailed ({ navigation, route }) {
-  // console.log("params ==>",route.params)
+  console.log("params ==>",route.params)
 
   const ip = "192.168.1.151" 
 
@@ -25,20 +25,23 @@ export default function Detailed ({ navigation, route }) {
   const [ objects, setObjects ] = useState<{type:string,id:number|string}[] | undefined>(undefined)
   const [ typesArray, setTypesArray ] = useState<[] | string[]>([]);
   const [ selectedTypes, setSelectedTypes ] = useState<[] | {type:string, id:string|number}[]>([]);
+  const [ errorMessage, setErrorMessage ] = useState<undefined | string>(undefined)
   const colorScheme = Appearance.getColorScheme();
   
-  const sendTypes = (id:number, types:string[]) => {
+  const sendTypes = async (id:number, types:string[]) => {
     console.log("id ==>",id, types)
     if(types.length === 0) return console.log("no types chosen")
     else if(types[0] === types[1]) return console.log("types are identical")
-    fetch(`http://${ip}:3002/drawing/${id}`, 
+    await fetch(`http://${ip}:3002/drawing/${id}`, 
       {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },body: JSON.stringify(types)} )
-          .then(res => console.log(res))
-          .catch(e => console.log("error when updating types ==>", e))
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(types)
+      } 
+    )
+    .then(res => JSON.stringify(res))
+    .then(async data => console.log("data",data))
+    .catch(e => console.log("error when updating types ==>", e))
   }
 
   const removeType = (index:number) => {
