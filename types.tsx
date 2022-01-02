@@ -15,18 +15,22 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Detailed: undefined | { url: string; title: string; description: string; shape: string; };
+  Detailed: Drawing;
+    // createdAt, title, shape, updatedAt, url, description, id
   Modal: undefined;
   NotFound: undefined;
 };
 
-export type Drawings = {
+export type Drawing = {  
   url:string;
+  id:string|number;
   title: string;
   description: string;
   shape: string;
-  objects: {type:string, id:string|number}[]
-}[] | undefined;
+  objects: {type:string, id:string|number}[] | []
+}
+
+export type Drawings = Drawing[];
 
 export type DrawingUrls = {caption:string, source:{uri:string}}[] | undefined
 
@@ -38,6 +42,7 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> = Nati
 export type RootTabParamList = {
   Home: undefined;
   Carousel: undefined;
+  // Detailed: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

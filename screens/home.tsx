@@ -13,7 +13,7 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
   const ip = "192.168.1.151" 
   const colorScheme = Appearance.getColorScheme();
   const [ loading, setLoading ] = useState<boolean | null>(true)
-  const [ drawingData, setDrawingData ] = useState<Drawings>(undefined)
+  const [ drawingData, setDrawingData ] = useState<Drawings>()
 
   const mapDrawingsToCards = () => {
     if(setDrawingData !== undefined) {
