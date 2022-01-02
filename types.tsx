@@ -25,6 +25,7 @@ export type Drawings = {
   title: string;
   description: string;
   shape: string;
+  objects: {type:string, id:string|number}[]
 }[] | undefined;
 
 export type DrawingUrls = {caption:string, source:{uri:string}}[] | undefined

@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native';
+import { StyleSheet, TouchableOpacity, Appearance, ScrollView, Image, FlatList } from 'react-native'; 
 
 import { Card, Button, Icon } from 'react-native-elements'
 import customBtn from '../constants/CustomStyles';
@@ -15,10 +15,6 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
   const [ loading, setLoading ] = useState<boolean | null>(true)
   const [ drawingData, setDrawingData ] = useState<Drawings>(undefined)
 
-  const updateDrawing = async (data :any) => {
-    console.log('Update the drawing with this ==>', data)
-  }
-
   const mapDrawingsToCards = () => {
     if(setDrawingData !== undefined) {
       return <ScrollView 
@@ -33,11 +29,13 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
           {drawing.shape == "v" && <Card.Image style={styles.imageVertical}source={{ uri: `${drawing.url}.jpg` }} />}
           {drawing.shape == "r" && <Card.Image style={styles.imageRect}source={{ uri: `${drawing.url}.jpg` }} />}
 
-          <Text style={{ marginBottom: 10 }}>
-            {drawing.description}
-          </Text>
+          <Text style={{ marginBottom: 10 }}>{drawing.description}</Text>
           <Card.Divider />
-            <View style={{ alignItems:'center',justifyContent:'center', marginBottom:10}}><Text style={{fontWeight:'bold'}}>{drawing.objects.map(obj => (obj.type).toUpperCase() + "     ")}</Text></View>
+          <View style={{ alignItems:'center',justifyContent:'center', marginBottom:10}}>
+            <Text style={{fontWeight:'bold'}}>
+              {drawing.objects.map((obj:{type:string}) => (obj.type).toUpperCase() + "     ")}
+            </Text>
+          </View>
           <TouchableOpacity 
             style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
             onPress={() => navigation.navigate('Detailed', drawing)}
@@ -46,22 +44,6 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
             Edit Types
           </Text>
           </TouchableOpacity>
-          {/* <Button
-            icon={
-              <Icon
-                name="code"
-                color="#ffffff"
-                iconStyle={{ marginRight: 10 }}
-              />
-            }
-            buttonStyle={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0,
-            }}
-            title="VIEW NOW"
-          /> */}
           </Card>
         )
       })}</ScrollView>
@@ -87,30 +69,15 @@ export default function Home({ navigation }: RootTabScreenProps<'Home'>) {
     getDrawings()
   }, [])
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => getDrawings());
+    return unsubscribe
+  }, [navigation])
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Home</Text>
-      <Text>
-        Drawings will be displayed as cards with the option toupdate the object information
-      </Text> */}
-      {/* <Text>
-        Might add a filter option at the top of the page for object types, not sure yet
-      </Text> */}
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
-      {/* <TouchableOpacity 
-        onPress={getDrawings} 
-        style={colorScheme == 'dark' ? customBtn.btnDark: customBtn.btnLight}
-      >
-        <Text 
-          style={colorScheme == 'dark' ? customBtn.btnTextDark: customBtn.btnTextLight}>
-            asdasd 
-        </Text> */}
-      {/* </TouchableOpacity> */}
       {loading && <Text>loading...</Text>}
       {loading == false && mapDrawingsToCards()}
-      {/* <Text>sdasd</Text> */}
-      {/* {drawingData!==undefined ? mapDrawingsToCards() : null} */}
     </View>
   );
 }

@@ -5,6 +5,7 @@ import { Icon } from 'react-native-elements';
 import customBtn from '../constants/CustomStyles';
 import SelectDropdown from 'react-native-select-dropdown'
 import { FontAwesome } from '@expo/vector-icons';
+import { RootStackScreenProps } from '../types';
 
 
 

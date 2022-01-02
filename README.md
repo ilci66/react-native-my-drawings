@@ -7,4 +7,4 @@
 * So many libraries but nothing worked for the options form properly
 * There will be a 3 types limit in the array, they will be in a row with the x icon for removing the type
 * Getting a json parse error when updating, working on it ===> Fixed it by saving the edits in the backend, wasn't here
-* Gotta find a way to pass the getdrawings method along with the drawing info to the detailed screen
+* Working on the type errors
